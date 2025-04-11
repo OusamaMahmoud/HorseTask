@@ -1,5 +1,5 @@
 import defaultHorse from "/assets/horse.png";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import ErrorFallBack from "../../components/common/ErrorFallBack";
 import Skeleton from "../../components/common/Skeleton";
 import { useHorse } from "../../hooks/useHorse";
@@ -8,8 +8,15 @@ import OwnerInfo from "../../components/horses/OwnerInfo";
 import PackagesInfo from "../../components/horses/PackagesInfo";
 import ServicesInfo from "../../components/horses/ServicesInfo";
 import HorseInfo from "../../components/horses/HorseInfo";
+import { GrReturn } from "react-icons/gr";
 
 const HorseDetails = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate("/horses"); // This will take you back to the horses page
+  };
+
   const { id } = useParams<{ id: string }>();
 
   const { data: horse, isPending, isError, error, refetch } = useHorse(id);
@@ -21,6 +28,13 @@ const HorseDetails = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
+      <button
+        className="p-4 rounded-xl shadow-xl w-fit dark:bg-white cursor-pointer"
+        onClick={handleGoBack}
+      >
+        <GrReturn className="text-black" />
+      </button>
+
       <h1 className="text-4xl font-bold mb-8 text-center text-gray-800 dark:text-white shadow-md p-4 rounded-xl">
         {horse.name}
       </h1>

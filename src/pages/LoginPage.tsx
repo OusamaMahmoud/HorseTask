@@ -1,69 +1,46 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import api from "../services/axios";
-import { getToken, setToken } from "../lib/auth";
+import { getToken } from "../lib/auth";
 import { FaLock, FaEnvelope } from "react-icons/fa";
-import { Navigate, useNavigate } from "react-router";
-
-type LoginForm = {
-  email: string;
-  password: string;
-};
-type LoginResponse = {
-  data: {
-    token: string;
-  };
-};
+import { Navigate } from "react-router";
+import { LoginForm } from "../types/login";
+import useLogin from "../hooks/useLogin";
+import horseImage from "/assets/horse.png"; 
 
 const LoginPage = () => {
+  const storedToken = getToken();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>();
 
-  const storedToken = getToken();
+  const { mutate: login, isPending, error, isError } = useLogin();
+
+  const onSubmit = async (data: LoginForm) => {
+    login(data);
+  };
+
   if (storedToken) {
     return <Navigate to="/horses" replace />;
   }
 
-  const navigate = useNavigate();
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = async (data: LoginForm) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await api.post<LoginResponse>("/login", data);
-      const token = res.data.data.token;
-
-      if (token) {
-        setToken(token);
-        navigate("/horses");
-      } else {
-        setError("Login failed: Token not found");
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-full max-w-sm shadow-xl bg-base-100">
-        <div className="card-body">
-          <h2 className="text-2xl font-bold text-center">Login</h2>
+    <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${horseImage})` }}>
+      <div className="flex items-center justify-center min-h-screen bg-black bg-opacity-50">
+        <div className="card w-full max-w-sm shadow-xl bg-white bg-opacity-90 p-6 rounded-xl">
+          <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
 
-          {error && <div className="alert alert-error mt-2">{error}</div>}
+          {isError && (
+            <div className="alert alert-error my-2">
+              {error.message}
+            </div>
+          )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-4">
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text flex items-center gap-2">
+                <span className="label-text flex items-center gap-2 text-gray-700">
                   <FaEnvelope /> Email
                 </span>
               </div>
@@ -71,7 +48,7 @@ const LoginPage = () => {
                 type="email"
                 {...register("email", { required: "Email is required" })}
                 className="input input-bordered w-full"
-                defaultValue="frosiatech_it@dal-digital.com"
+                placeholder="Enter your email"
               />
               {errors.email && (
                 <p className="text-error text-sm">{errors.email.message}</p>
@@ -80,7 +57,7 @@ const LoginPage = () => {
 
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text flex items-center gap-2">
+                <span className="label-text flex items-center gap-2 text-gray-700">
                   <FaLock /> Password
                 </span>
               </div>
@@ -88,7 +65,7 @@ const LoginPage = () => {
                 type="password"
                 {...register("password", { required: "Password is required" })}
                 className="input input-bordered w-full"
-                defaultValue="iqbO2imG9RRc"
+                placeholder="Enter your password"
               />
               {errors.password && (
                 <p className="text-error text-sm">{errors.password.message}</p>
@@ -98,9 +75,13 @@ const LoginPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full mt-4"
-              disabled={loading}
+              disabled={isPending}
             >
-              {loading ? <span className="loading loading-spinner" /> : "Login"}
+              {isPending ? (
+                <span className="loading loading-spinner" />
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
         </div>
