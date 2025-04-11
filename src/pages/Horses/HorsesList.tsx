@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import defaultHorse from "/assets/horse.png";
 import Skeleton from "../../components/common/Skeleton";
 import { useFetchHorses } from "../../hooks/useFetchHorses";
@@ -8,23 +8,32 @@ import ErrorFallback from "../../components/common/ErrorFallBack";
 import HorseCard from "../../components/horses/HorseCard";
 import HorsePagination from "../../components/horses/HorsePagination";
 import NoResultsMessage from "../../components/common/NoResultsMessage";
+import HorseFilter from "../../components/horses/HorseFilter";
 
 const HorseList = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const [breed, setBreed] = useState("");
   const {
     data: horseCollection,
     isPending,
     isError,
     error,
     refetch,
-  } = useFetchHorses(search, page, pageSize);
+  } = useFetchHorses(search, breed, page);
+
+  // Reset page to 1 when the search keyword changes
+  useEffect(() => {
+    setPage(1);
+  }, [search, breed]);
+
   // Handle retry Fetch
   const handleRetry = () => {
     refetch();
   };
-
+  const handleFilterChange = (selectedBreed: string) => {
+    setBreed(selectedBreed);
+  };
   if (isPending) return <Skeleton />;
   if (isError) return <ErrorFallback error={error} handleRetry={handleRetry} />;
 
@@ -37,7 +46,7 @@ const HorseList = () => {
         onChange={(val) => setSearch(val)}
         placeholder="Search by horse name"
       />
-
+      <HorseFilter onFilter={handleFilterChange} />
       {/* Horse List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
         {horseCollection?.data?.map((horse) => (
