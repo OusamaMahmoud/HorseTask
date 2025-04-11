@@ -1,69 +1,46 @@
-// src/pages/HorseDetails.tsx
-import { useQuery } from "@tanstack/react-query";
 import defaultHorse from "/assets/horse.png";
 import { useParams } from "react-router";
-import apiClient from "../../services/axios";
+import ErrorFallBack from "../../components/common/ErrorFallBack";
+import Skeleton from "../../components/common/Skeleton";
+import { useHorse } from "../../hooks/useHorse";
+import SafeImage from "../../components/common/SafeImage";
+import OwnerInfo from "../../components/horses/OwnerInfo";
+import PackagesInfo from "../../components/horses/PackagesInfo";
+import ServicesInfo from "../../components/horses/ServicesInfo";
+import HorseInfo from "../../components/horses/HorseInfo";
 
 const HorseDetails = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isPending, isError, error } = useQuery({
-    queryKey: ["horse", id],
-    queryFn: async () => {
-      const res = await apiClient.get<{
-        horse: any;
-      }>(`/horses/${id}`);
-      console.log(res.data);
-      return res.data.horse;
-    },
-    refetchOnWindowFocus: false,
-    enabled: !!id, // prevents fetching until we have an id
-  });
+  const { data: horse, isPending, isError, error, refetch } = useHorse(id);
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = defaultHorse;
-  };
+  const handleRetry = () => refetch();
 
-  if (isPending) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
-
-  const horse = data;
+  if (isPending) return <Skeleton />;
+  if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold my-4">{horse.name}</h1>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800 dark:text-white shadow-md p-4 rounded-xl">
+        {horse.name}
+      </h1>
 
-      <div className="card bg-base-100 shadow-xl p-6">
-        <img
-          src={horse.image || defaultHorse}
-          alt={horse.name}
-          onError={handleImageError}
-          className="w-full h-[400px] object-cover rounded mb-4"
-        />
+      <div className="grid md:grid-cols-2 gap-10">
+        <div>
+          <SafeImage
+            src={horse.image}
+            fallbackSrc={defaultHorse}
+            alt={horse.name}
+            className="w-full h-[400px] object-cover rounded-xl shadow-lg"
+          />
 
-        <p>
-          <strong>Breed:</strong> {horse.breed}
-        </p>
-        <p>
-          <strong>Age:</strong> {horse.date_of_birth}
-        </p>
-        <p>
-          <strong>Gender:</strong> {horse.gender?.name_ar}
-        </p>
-        <p>
-          <strong>Father:</strong> {horse.father_name}
-        </p>
-        <p>
-          <strong>Mother:</strong> {horse.mother_name}
-        </p>
+          <HorseInfo horse={horse} />
+        </div>
 
-        <div className="mt-4">
-          <h2 className="text-xl font-semibold">Owner:</h2>
-          <p>
-            {horse.user?.first_name} {horse.user?.last_name}
-          </p>
-          <p>{horse.user?.email}</p>
-          <p>{horse.user?.phone}</p>
+        <div className="space-y-6">
+          <OwnerInfo user={horse.user} />
+          <PackagesInfo packages={horse.packages} />
+          <ServicesInfo services={horse.services} />
         </div>
       </div>
     </div>

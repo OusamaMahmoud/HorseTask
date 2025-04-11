@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import api from "../services/axios";
-import { setToken } from "../lib/auth";
+import { getToken, setToken } from "../lib/auth";
 import { FaLock, FaEnvelope } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 type LoginForm = {
   email: string;
@@ -21,6 +21,11 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>();
+
+  const storedToken = getToken();
+  if (storedToken) {
+    return <Navigate to="/horses" replace />;
+  }
 
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);

@@ -4,11 +4,11 @@ import Skeleton from "../../components/common/Skeleton";
 import { useFetchHorses } from "../../hooks/useFetchHorses";
 import PageHeader from "../../components/common/PageHeader";
 import SearchInput from "../../components/common/SearchInput";
-import ErrorFallback from "../../components/common/ErrorFallBack";
 import HorseCard from "../../components/horses/HorseCard";
 import HorsePagination from "../../components/horses/HorsePagination";
 import NoResultsMessage from "../../components/common/NoResultsMessage";
 import HorseFilter from "../../components/horses/HorseFilter";
+import ErrorFallBack from "../../components/common/ErrorFallBack";
 
 const HorseList = () => {
   const [search, setSearch] = useState("");
@@ -35,12 +35,10 @@ const HorseList = () => {
     setBreed(selectedBreed);
   };
   if (isPending) return <Skeleton />;
-  if (isError) return <ErrorFallback error={error} handleRetry={handleRetry} />;
+  if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
-      <PageHeader />
-
       <SearchInput
         value={search}
         onChange={(val) => setSearch(val)}
