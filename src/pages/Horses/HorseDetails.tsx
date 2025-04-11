@@ -1,8 +1,8 @@
 // src/pages/HorseDetails.tsx
 import { useQuery } from "@tanstack/react-query";
-import api from "../../services/axios";
 import defaultHorse from "/assets/horse.png";
 import { useParams } from "react-router";
+import apiClient from "../../services/axios";
 
 const HorseDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +10,7 @@ const HorseDetails = () => {
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["horse", id],
     queryFn: async () => {
-      const res = await api.get<{
+      const res = await apiClient.get<{
         horse: any;
       }>(`/horses/${id}`);
       console.log(res.data);
