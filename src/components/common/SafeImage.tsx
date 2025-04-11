@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 type SafeImageProps = {
   src: string;
@@ -7,17 +7,19 @@ type SafeImageProps = {
   className?: string;
 };
 
-const SafeImage = ({ src, fallbackSrc, alt = "", className = "" }: SafeImageProps) => {
-  const [imgSrc, setImgSrc] = useState(src);
+const SafeImage = React.memo(
+  ({ src, fallbackSrc, alt = "", className = "" }: SafeImageProps) => {
+    const [imgSrc, setImgSrc] = useState(src);
 
-  return (
-    <img
-      src={imgSrc}
-      alt={alt}
-      className={className}
-      onError={() => setImgSrc(fallbackSrc)}
-    />
-  );
-};
+    return (
+      <img
+        src={imgSrc}
+        alt={alt}
+        className={className}
+        onError={() => setImgSrc(fallbackSrc)}
+      />
+    );
+  }
+);
 
 export default SafeImage;

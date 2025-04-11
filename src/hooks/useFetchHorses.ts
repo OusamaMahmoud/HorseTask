@@ -4,7 +4,7 @@ import { useDebounce } from "./useDebounce";
 import type { HorseApiResponse } from "../types/horse";
 
 export const useFetchHorses = (search: string, breed: string, page: number) => {
-  const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(search, 200);
 
   return useQuery({
     queryKey: ["horses", debouncedSearch, breed, page],
@@ -15,6 +15,8 @@ export const useFetchHorses = (search: string, breed: string, page: number) => {
       console.log(res.data.data);
       return res.data.data;
     },
+    staleTime: 1 * 60 * 1000, // Cache data for 5 minutes
+    gcTime: 30 * 60 * 1000, // Keep data in the cache for 30 minutes
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });

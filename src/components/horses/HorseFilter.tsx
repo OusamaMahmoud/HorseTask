@@ -36,7 +36,7 @@ const HorseFilter: React.FC<{ onFilter: (breed: string) => void }> = ({
         id="breed"
         value={selectedBreed}
         onChange={handleChange}
-        className="w-80 p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:ring-blue-500"
+        className="select w-80 p-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:ring-blue-500"
       >
         <option value="">Select Breed</option>
         {breeds.map((breed, index) => (

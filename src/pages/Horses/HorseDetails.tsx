@@ -27,9 +27,9 @@ const HorseDetails = () => {
   if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-6xl mx-auto px-4 my-2">
       <button
-        className="p-4 rounded-xl shadow-xl w-fit dark:bg-white cursor-pointer"
+        className="p-4 my-2 rounded-xl shadow-xl w-fit dark:bg-white cursor-pointer"
         onClick={handleGoBack}
       >
         <GrReturn className="text-black" />

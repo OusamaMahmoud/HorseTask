@@ -1,19 +1,29 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import defaultHorse from "/assets/horse.png";
 import Skeleton from "../../components/common/Skeleton";
 import { useFetchHorses } from "../../hooks/useFetchHorses";
-import PageHeader from "../../components/common/PageHeader";
 import SearchInput from "../../components/common/SearchInput";
 import HorseCard from "../../components/horses/HorseCard";
 import HorsePagination from "../../components/horses/HorsePagination";
 import NoResultsMessage from "../../components/common/NoResultsMessage";
 import HorseFilter from "../../components/horses/HorseFilter";
 import ErrorFallBack from "../../components/common/ErrorFallBack";
+import { useNavigate, useLocation } from "react-router";
 
 const HorseList = () => {
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-  const [breed, setBreed] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the search and page from the URL query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const initialSearch = queryParams.get("search") || "";
+  const initialPage = parseInt(queryParams.get("page") || "1");
+  const initialBreed = queryParams.get("breed") || "";
+
+  const [search, setSearch] = useState(initialSearch);
+  const [page, setPage] = useState(initialPage);
+  const [breed, setBreed] = useState(initialBreed);
+
   const {
     data: horseCollection,
     isPending,
@@ -22,18 +32,35 @@ const HorseList = () => {
     refetch,
   } = useFetchHorses(search, breed, page);
 
-  // Reset page to 1 when the search keyword changes
+  const hasHorses = horseCollection && horseCollection?.data?.length > 0;
+
+  // Reset page to 1 when the search keyword or breed changes
   useEffect(() => {
-    setPage(1);
+    if (page !== 1) {
+      setPage(1);
+    }
   }, [search, breed]);
 
-  // Handle retry Fetch
-  const handleRetry = () => {
+  // Preserve search and pagination states in the browser URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (search) params.set("search", search);
+    if (page) params.set("page", page.toString());
+    if (breed) params.set("breed", breed);
+
+    navigate(`/horses?${params.toString()}`, { replace: true });
+  }, [search, page, breed, navigate]);
+
+  const handleRetry = useCallback(() => {
     refetch();
-  };
-  const handleFilterChange = (selectedBreed: string) => {
+  }, [refetch]);
+
+  const handleFilterChange = useCallback((selectedBreed: string) => {
     setBreed(selectedBreed);
-  };
+  }, []);
+
+
+  
   if (isPending) return <Skeleton />;
   if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
 
@@ -53,10 +80,10 @@ const HorseList = () => {
       </div>
 
       {/* No results message */}
-      {horseCollection?.data?.length === 0 && <NoResultsMessage />}
+      {!hasHorses && <NoResultsMessage />}
 
       {/* Pagination */}
-      {horseCollection?.data?.length > 0 && (
+      {hasHorses && (
         <HorsePagination
           currentPage={horseCollection?.meta?.current_page}
           lastPage={horseCollection?.meta?.last_page}

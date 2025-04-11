@@ -1,10 +1,11 @@
+import React from "react";
 import { Horse } from "../../types/horse";
 
 type HorseField = {
   label: string;
   value: string | number | null | undefined;
 };
-const HorseInfo = ({ horse }: { horse: Horse }) => {
+const HorseInfo = React.memo(({ horse }: { horse: Horse }) => {
   const horseInfoArray: HorseField[] = horse
     ? [
         { label: "Breed", value: horse.breed },
@@ -28,6 +29,6 @@ const HorseInfo = ({ horse }: { horse: Horse }) => {
       ))}
     </div>
   );
-};
+});
 
 export default HorseInfo;

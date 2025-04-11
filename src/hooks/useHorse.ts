@@ -12,5 +12,6 @@ export const useHorse = (id: string | number | undefined) => {
     },
     enabled: !!id,
     refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 1, // Cache for 5 minutes
   });
 };

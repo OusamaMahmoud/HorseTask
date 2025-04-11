@@ -1,9 +1,14 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import LoginPage from "../pages/LoginPage";
-import HorseDetails from "../pages/Horses/HorseDetails";
 import ProtectedRoute from "./ProtectedRoute";
 import HorsesList from "../pages/Horses/HorsesList";
 import Layout from "../layouts/Layout";
+import React, { Suspense } from "react";
+import Skeleton from "../components/common/Skeleton";
+import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+
+// Lazy load the HorseDetails component
+const HorseDetails = React.lazy(() => import("../pages/Horses/HorseDetails"));
 
 const router = createBrowserRouter([
   {
@@ -18,7 +23,15 @@ const router = createBrowserRouter([
         index: true,
         element: (
           <ProtectedRoute>
-            <HorsesList />
+            <motion.div
+              key="horse-details" // Key is necessary for animations
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }} // Adjust the duration as needed
+            >
+              <HorsesList />
+            </motion.div>
           </ProtectedRoute>
         ),
       },
@@ -26,7 +39,19 @@ const router = createBrowserRouter([
         path: ":id",
         element: (
           <ProtectedRoute>
-            <HorseDetails />
+            <Suspense fallback={<Skeleton />}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key="horse-details" // Key is necessary for animations
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }} // Adjust the duration as needed
+                >
+                  <HorseDetails />
+                </motion.div>
+              </AnimatePresence>
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -34,7 +59,17 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <motion.div
+        key="horse-details" // Key is necessary for animations
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }} // Adjust the duration as needed
+      >
+        <LoginPage />
+      </motion.div>
+    ),
   },
 ]);
 
