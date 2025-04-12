@@ -7,8 +7,8 @@ import HorseCard from "../../components/horses/HorseCard";
 import HorsePagination from "../../components/horses/HorsePagination";
 import NoResultsMessage from "../../components/common/NoResultsMessage";
 import HorseFilter from "../../components/horses/HorseFilter";
-import ErrorFallBack from "../../components/common/ErrorFallBack";
-import { useNavigate, useLocation} from "react-router";
+import { useNavigate, useLocation } from "react-router";
+import ErrorComponent from "../../components/common/ErrorComponent";
 
 const HorseList = () => {
   const navigate = useNavigate();
@@ -60,7 +60,8 @@ const HorseList = () => {
   }, []);
 
   if (isPending) return <Skeleton />;
-  if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
+  if (isError)
+    return <ErrorComponent error={error} handleRetry={handleRetry} />;
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
@@ -81,7 +82,7 @@ const HorseList = () => {
           </Link>
         </div> */}
       </div>
-      
+
       {/* Horse List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
         {horseCollection?.data?.map((horse) => (

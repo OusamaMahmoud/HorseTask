@@ -1,6 +1,5 @@
 import defaultHorse from "/assets/horse.png";
 import { useNavigate, useParams } from "react-router";
-import ErrorFallBack from "../../components/common/ErrorFallBack";
 import Skeleton from "../../components/common/Skeleton";
 import { useHorse } from "../../hooks/useHorse";
 import SafeImage from "../../components/common/SafeImage";
@@ -9,12 +8,13 @@ import PackagesInfo from "../../components/horses/PackagesInfo";
 import ServicesInfo from "../../components/horses/ServicesInfo";
 import HorseInfo from "../../components/horses/HorseInfo";
 import { GrReturn } from "react-icons/gr";
+import ErrorComponent from "../../components/common/ErrorComponent";
 
 const HorseDetails = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/horses"); 
+    navigate("/horses");
   };
 
   const { id } = useParams<{ id: string }>();
@@ -24,7 +24,8 @@ const HorseDetails = () => {
   const handleRetry = () => refetch();
 
   if (isPending) return <Skeleton />;
-  if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
+  if (isError)
+    return <ErrorComponent error={error} handleRetry={handleRetry} />;
 
   return (
     <div className="max-w-6xl mx-auto px-4 my-2">
