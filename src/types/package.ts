@@ -1,6 +1,3 @@
-// src/types/package.ts
-
-/** Payment information */
 export interface Payment {
     id: number
     amount: number

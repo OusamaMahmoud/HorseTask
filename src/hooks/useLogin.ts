@@ -10,7 +10,6 @@ const useLogin = () => {
   return useMutation({
     mutationFn: async (data: LoginForm) => {
       const res = await apiClient.post<LoginResponse>("/login", data);
-      console.log("Login response:", res.data);
       return res.data.data;
     },
     onSuccess: (data) => {

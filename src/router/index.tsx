@@ -5,10 +5,9 @@ import HorsesList from "../pages/Horses/HorsesList";
 import Layout from "../layouts/Layout";
 import React, { Suspense } from "react";
 import Skeleton from "../components/common/Skeleton";
-import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import { motion, AnimatePresence } from "framer-motion";
 import ImageContainer from "../components/common/ImageContainer";
 
-// Lazy load the HorseDetails component
 const HorseDetails = React.lazy(() => import("../pages/Horses/HorseDetails"));
 
 const router = createBrowserRouter([
@@ -25,11 +24,11 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <motion.div
-              key="horse-details" // Key is necessary for animations
+              key="horse-details" 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }} // Adjust the duration as needed
+              transition={{ duration: 0.3 }} 
             >
               <HorsesList />
             </motion.div>
@@ -43,11 +42,11 @@ const router = createBrowserRouter([
             <Suspense fallback={<Skeleton />}>
               <AnimatePresence mode="wait">
                 <motion.div
-                  key="horse-details" // Key is necessary for animations
+                  key="horse-details" 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }} // Adjust the duration as needed
+                  transition={{ duration: 0.3 }} 
                 >
                   <HorseDetails />
                 </motion.div>
@@ -60,11 +59,11 @@ const router = createBrowserRouter([
         path: "upload-image",
         element: (
           <motion.div
-            key="horse-details" // Key is necessary for animations
+            key="horse-details" 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }} // Adjust the duration as needed
+            transition={{ duration: 0.3 }} 
           >
             <ImageContainer />
           </motion.div>
@@ -76,11 +75,11 @@ const router = createBrowserRouter([
     path: "/login",
     element: (
       <motion.div
-        key="horse-details" // Key is necessary for animations
+        key="horse-details" 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }} // Adjust the duration as needed
+        transition={{ duration: 0.3 }}
       >
         <LoginPage />
       </motion.div>

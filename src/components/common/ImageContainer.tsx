@@ -7,7 +7,7 @@ const ImageContainer = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/horses"); // This will take you back to the horses page
+    navigate("/horses"); 
   };
   return (
     <div className="p-10  rounded-lg shadow-md">

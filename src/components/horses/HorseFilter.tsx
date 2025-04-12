@@ -21,7 +21,7 @@ const HorseFilter: React.FC<{ onFilter: (breed: string) => void }> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBreed(e.target.value);
-    onFilter(e.target.value); // Send the selected breed back to the parent component
+    onFilter(e.target.value); 
   };
 
   return (

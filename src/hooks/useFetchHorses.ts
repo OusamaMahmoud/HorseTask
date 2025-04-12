@@ -12,11 +12,9 @@ export const useFetchHorses = (search: string, breed: string, page: number) => {
       const res = await apiClient.get<{ data: HorseApiResponse }>("/horses", {
         params: { page, breed, search: debouncedSearch },
       });
-      console.log(res.data.data);
       return res.data.data;
     },
-    staleTime: 1 * 60 * 1000, // Cache data for 5 minutes
-    gcTime: 30 * 60 * 1000, // Keep data in the cache for 30 minutes
+    staleTime: 1 * 60 * 1000, 
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });

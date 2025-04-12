@@ -14,7 +14,7 @@ const HorseDetails = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate("/horses"); // This will take you back to the horses page
+    navigate("/horses"); 
   };
 
   const { id } = useParams<{ id: string }>();

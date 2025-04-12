@@ -8,8 +8,7 @@ import HorsePagination from "../../components/horses/HorsePagination";
 import NoResultsMessage from "../../components/common/NoResultsMessage";
 import HorseFilter from "../../components/horses/HorseFilter";
 import ErrorFallBack from "../../components/common/ErrorFallBack";
-import { useNavigate, useLocation, Link } from "react-router";
-import ImageUploader from "../../components/common/ImageUploader";
+import { useNavigate, useLocation} from "react-router";
 
 const HorseList = () => {
   const navigate = useNavigate();
@@ -59,9 +58,7 @@ const HorseList = () => {
   const handleFilterChange = useCallback((selectedBreed: string) => {
     setBreed(selectedBreed);
   }, []);
-  const handleSuccess = (data: any) => {
-    console.log("Image uploaded:", data);
-  };
+
   if (isPending) return <Skeleton />;
   if (isError) return <ErrorFallBack error={error} handleRetry={handleRetry} />;
 
@@ -84,6 +81,7 @@ const HorseList = () => {
           </Link>
         </div> */}
       </div>
+      
       {/* Horse List */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
         {horseCollection?.data?.map((horse) => (

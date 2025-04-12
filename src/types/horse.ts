@@ -29,9 +29,9 @@ export interface Horse {
   other_registers: string | null;
   out_reason: string | null;
   out_time: string | null;
-  packages: Package[]; // Updated packages type
+  packages: Package[]; 
   registers: any[];
-  services: Service[]; // Updated services type
+  services: Service[]; 
   training_horse: number;
   created_at: string;
   user: {
@@ -44,7 +44,7 @@ export interface Horse {
     image: string;
   };
 }
-/** Full API response for GET /horses */
+
 export interface HorseApiResponse {
   data: Horse[];
   links: PaginationLinks;

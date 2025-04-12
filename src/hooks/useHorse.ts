@@ -1,6 +1,5 @@
-// src/hooks/useHorse.ts
 import { useQuery } from "@tanstack/react-query";
-import { Horse } from "../types/horse"; // adjust the path to your Horse type
+import { Horse } from "../types/horse"; 
 import apiClient from "../services/axios";
 
 export const useHorse = (id: string | number | undefined) => {
@@ -12,6 +11,6 @@ export const useHorse = (id: string | number | undefined) => {
     },
     enabled: !!id,
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 1, // Cache for 5 minutes
+    staleTime: 1000 * 60 * 1, 
   });
 };
