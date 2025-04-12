@@ -26,12 +26,6 @@ const HorseFilter: React.FC<{ onFilter: (breed: string) => void }> = ({
 
   return (
     <div className="mb-8">
-      <label
-        htmlFor="breed"
-        className="block text-gray-700 dark:text-gray-300 mb-2"
-      >
-        Filter by Breed:
-      </label>
       <select
         id="breed"
         value={selectedBreed}

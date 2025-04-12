@@ -6,6 +6,7 @@ import Layout from "../layouts/Layout";
 import React, { Suspense } from "react";
 import Skeleton from "../components/common/Skeleton";
 import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import ImageContainer from "../components/common/ImageContainer";
 
 // Lazy load the HorseDetails component
 const HorseDetails = React.lazy(() => import("../pages/Horses/HorseDetails"));
@@ -53,6 +54,20 @@ const router = createBrowserRouter([
               </AnimatePresence>
             </Suspense>
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: "upload-image",
+        element: (
+          <motion.div
+            key="horse-details" // Key is necessary for animations
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }} // Adjust the duration as needed
+          >
+            <ImageContainer />
+          </motion.div>
         ),
       },
     ],
