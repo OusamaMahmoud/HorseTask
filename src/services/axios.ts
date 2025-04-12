@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://frosiatech_itcAlAX.jeyad360.com/organization/v1/d",
+  baseURL: "https://noonacademy_ancozle.jeyad360.com/organization/v1/d",
 });
 
 apiClient.interceptors.request.use((config) => {

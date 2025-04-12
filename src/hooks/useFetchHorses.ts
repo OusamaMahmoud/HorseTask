@@ -14,7 +14,7 @@ export const useFetchHorses = (search: string, breed: string, page: number) => {
       });
       return res.data.data;
     },
-    staleTime: 1 * 60 * 1000, 
+    staleTime: 1 * 60 * 1000,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
